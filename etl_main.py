@@ -6,6 +6,9 @@ from pyspark.sql.functions import year, month, dayofmonth, hour, weekofyear
 import os
 import glob
 import configparser
+import logging
+
+from etl_immigration import process_sas_file 
 
 def create_spark_session():
     """
@@ -28,7 +31,9 @@ def create_spark_session():
 
 def input_sas_files():
     """
-    
+    Lists all of the sas raw binary tables that need to be processed as directory paths
+    Input Args: None
+    Output: a glob list of directory paths to each SAS7BDAT file
     """
 
     return glob.glob(os.path.join("/", "data", "18-83510-I94-Data-2016", "*.sas7bdat"))
@@ -37,13 +42,11 @@ def input_sas_files():
 if __name__ == "__main__":
     sc = create_spark_session()
     
-    output_data = "s3a://xuren-data-eng-nd/capstone/"
+    output_path = "/output_data/"
     
     input_data = input_sas_files()
 #     print(input_data)
 
-    df_spark =sc.read.format('com.github.saurfang.sas.spark').load('../../data/18-83510-I94-Data-2016/i94_apr16_sub.sas7bdat')
-    
-    print(df_spark.show(2, vertical=True))
+    process_sas_file(sc, input_data[0], output_path)
     
     print("DONE")
