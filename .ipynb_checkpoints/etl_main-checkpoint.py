@@ -9,6 +9,7 @@ import configparser
 import logging
 
 from etl_immigration import process_sas_file 
+from etl_us_demographics import process_demographics_file
 
 def create_spark_session():
     """
@@ -45,11 +46,16 @@ if __name__ == "__main__":
     output_path = "./output_data/"
     
     # process all raw i94 SAS files into monthly parquet files for entire year of 2016
-    input_data = input_sas_files()
-    for fname in input_data:
-        print(fname)
-        process_sas_file(sc, fname, output_path)
+#     input_data = input_sas_files()
+#     for fname in input_data:
+#         print(fname)
+#         process_sas_file(sc, fname, output_path)
     
+    # process us demographics file and write to parquet files
+    process_demographics_file(sc, "us-cities-demographics.csv", output_path)
     
+    # process airports file
     
-    print("DONE")
+    # process global temperatures file
+    
+    print("I94 DONE")
