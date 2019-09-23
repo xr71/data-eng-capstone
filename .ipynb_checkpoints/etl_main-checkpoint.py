@@ -42,11 +42,14 @@ def input_sas_files():
 if __name__ == "__main__":
     sc = create_spark_session()
     
-    output_path = "/output_data/"
+    output_path = "./output_data/"
     
+    # process all raw i94 SAS files into monthly parquet files for entire year of 2016
     input_data = input_sas_files()
-#     print(input_data)
-
-    process_sas_file(sc, input_data[0], output_path)
+    for fname in input_data:
+        print(fname)
+        process_sas_file(sc, fname, output_path)
+    
+    
     
     print("DONE")
