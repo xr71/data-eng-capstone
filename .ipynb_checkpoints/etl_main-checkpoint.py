@@ -10,6 +10,10 @@ import logging
 
 from etl_immigration import process_sas_file 
 from etl_us_demographics import process_demographics_file
+from etl_airportcodes import process_airports_file
+from etl_globaltemps import process_temp_file
+from etl_lkup import process_lookups
+from etl_make_fact import make_fact_table
 
 def create_spark_session():
     """
@@ -52,10 +56,18 @@ if __name__ == "__main__":
 #         process_sas_file(sc, fname, output_path)
     
     # process us demographics file and write to parquet files
-    process_demographics_file(sc, "us-cities-demographics.csv", output_path)
+#     process_demographics_file(sc, "us-cities-demographics.csv", output_path)
     
     # process airports file
+#     process_airports_file(sc, "airport-codes_csv.csv", output_path)
     
     # process global temperatures file
+#     process_temp_file(sc, "/data2/GlobalLandTemperaturesByCity.csv", output_path)
     
-    print("I94 DONE")
+    # create lookup tables
+#     process_lookups(sc, output_path)
+
+
+    #####################################################################################
+    
+    make_fact_table(sc, output_path)
