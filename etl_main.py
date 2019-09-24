@@ -50,23 +50,22 @@ if __name__ == "__main__":
     output_path = "./output_data/"
     
     # process all raw i94 SAS files into monthly parquet files for entire year of 2016
-#     input_data = input_sas_files()
-#     for fname in input_data:
-#         print(fname)
-#         process_sas_file(sc, fname, output_path)
+    input_data = input_sas_files()
+    for fname in input_data:
+        print(fname)
+        process_sas_file(sc, fname, output_path)
     
     # process us demographics file and write to parquet files
-#     process_demographics_file(sc, "us-cities-demographics.csv", output_path)
+    process_demographics_file(sc, "us-cities-demographics.csv", output_path)
     
     # process airports file
-#     process_airports_file(sc, "airport-codes_csv.csv", output_path)
+    process_airports_file(sc, "airport-codes_csv.csv", output_path)
     
     # process global temperatures file
-#     process_temp_file(sc, "/data2/GlobalLandTemperaturesByCity.csv", output_path)
+    process_temp_file(sc, "/data2/GlobalLandTemperaturesByCity.csv", output_path)
     
     # create lookup tables
-#     process_lookups(sc, output_path)
-
+    process_lookups(sc, output_path)
 
     #####################################################################################
     

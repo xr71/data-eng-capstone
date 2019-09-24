@@ -6,7 +6,13 @@ from pyspark.sql import DataFrame
 
 def make_fact_table(spark, output_path):
     """
-    
+    Reads all Parquet files from previous ETL steps into a Spark SQL DataFrame that is 
+        a fact table made from all of the dimmension tables made  
+        for the purpose of easy reporting and analytical queries
+    Input Args: SparkSession object, and 
+        the output folder for the Parquet output file
+    Output:
+        * NA - writes a Parquet file out
     """
     
     months_dfs = []

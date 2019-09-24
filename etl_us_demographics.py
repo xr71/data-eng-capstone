@@ -3,7 +3,12 @@ import logging
 
 def process_demographics_file(spark, input_data, output_path):
     """
-    
+    Reads the demographics csv file into a Spark SQL DataFrame and 
+        converts it to Parquet after cleaning it
+    Input Args: SparkSession object, the input raw file, and 
+        the output folder for the Parquet output file
+    Output:
+        * NA - writes a Parquet file out
     """
     
     df_spark = spark.read.format("csv").option("delimiter", ";").option("header", "true").load(input_data)

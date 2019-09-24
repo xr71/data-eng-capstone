@@ -3,7 +3,12 @@ from lkup_utils import us_state_codes, city_codes
 
 def process_lookups(spark, output_path):
     """
-    
+    Reads the utilities file of code to name mappings into Spark SQL DataFrames and 
+        converts them to Parquet
+    Input Args: SparkSession object, and 
+        the output folder for the Parquet output file
+    Output:
+        * NA - writes Parquet files out
     """
     
     state_df = pd.DataFrame({"state_code": list(us_state_codes.values()), 
