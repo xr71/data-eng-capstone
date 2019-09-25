@@ -6,8 +6,20 @@ This is the final project for the Udacity Data Engineer Nanodegree. In this proj
 ## About the Data
 The primary dataset is from the US National Tourism and Trade Office. It is for every month in the year 2016 and it is stored in SAS dataset binary formats. In this repository, there is a sample of this dataset in the file `immigration_data_sample.csv`. As you will notice in these data tables, there can be a lot of missing values. One of the things we will be doing in this project is to clean the data to the key columns. Furthermore, the datasets are quite large, with all 12 months being nearly 7 GBs of data. One of the decisions we will be making is how to preserve sufficient analytical information about the visas and immigration entries while reducing the number of rows and columns in the dataset. 
 
+## Purpose of the Data
+The schema I have designed is intended for use by downstream analytics teams; for example, analysts who need to create higher level reporting around aggregated metrics such as number of entries per state or the level of demographic diversity by state or the number of airports by various dimensions. Attention has been paid particularly to maintaining as much information as possible about the various attributes of the larger monthly immigration dataset such that analysts can slice and dice the data by gender, age, month of entry, visa type of entry, etc. 
 
-## Data Model
+This is so that the analysts or reporting teams using the final fact table do not have to perform excess number of joins and thus degrade business intelligence or slice-and-dice performance. 
+
+## Technologies Used and Decisions Made
+The primary technology used here is Apache Spark through the Pyspark API. We leverage Spark SQL greatly so that we can prototype as well as maintain and enhance the ETL pipelines rapidly moving forward. 
+
+More importantly, we use Pyspark as a way to scale performance for the future as well, since the datasets may become even larger over time, and performing these ETL steps in memory using Pandas is simply not scalable. 
+
+One of the first things we notice about the raw data is the high number of columns and the inconsistent number of null values in the various columns. Because I am focused primarily on designing an easy to use aggregated reporting table for my downstream users, I took attention to remove columns from the raw immigration i94 tables that do not provide dimensional value for my users. In this case, I decided to keep the aggregations at the year, month, age, gender, origin country, destination state, destination city, visa code, and visa type level while aggregating the total counts of i94 records, given that i94mode is 1 and i94port is not null. This step is important because I am making a conscious design choice for my users that I would otherwise have carefully scoped out and discussed with the team. I am limiting the dataset to i94mode=1 because this represents all Air based entries, as this is what my end users are interested in analyzing or reporting, and I ensure that i94port is not missing such that there are valid US cities to report on. In a project setting, we may further discuss with the team whether we want to remove any rows where a i94port code is not available, but this will be again discussed with all relevant stakeholders and iterated upon.  
+
+
+## Final Data Model
 
 My final data model contains 2 lookup tables, 4 dimmensions tables, and a fact table that is pre-joined for ease of use for BI or analytics. 
 
@@ -127,6 +139,7 @@ If you are not interested in running the entire pipeline, the Parquet data files
 
 ## Analytical Example
 An example of analytics query is provided for you along with a `matplotlib` plot of number of i94 entries by age in the `demo_fact_analytics.ipynb` file.
+
 
 ## Additional Scenarios for Consideration
 
