@@ -75,6 +75,32 @@ def make_fact_table(spark, output_path):
                 on i.year = t.year and i.month = t.month
         """)
     
+    print("CHECKING ROWS AVAILABLE IN ALL TABLES")
+    spark.sql("""
+        select 'immigration' as table_name, count(*) as rowcnt
+        from immigration
+        
+        union all
+        select 'demographics' as table_name, count(*) as rowcnt
+        from demographics
+        
+        union all
+        select 'airports' as table_name, count(*) as rowcnt
+        from airports
+        
+        union all
+        select 'temperatures' as table_name, count(*) as rowcnt
+        from temperatures
+        
+        union all
+        select 'lcity' as table_name, count(*) as rowcnt
+        from lcity
+        
+        union all
+        select 'lstate' as table_name, count(*) as rowcnt
+        from lstate
+    """).show()
+    
     print("CHECK THAT FACT TABLE HAS SUFFICIENT ROWS")
     print(out_df.count())
     

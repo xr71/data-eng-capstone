@@ -6,7 +6,13 @@ from pyspark.sql import DataFrame
 
 def make_fact_table(spark, output_path):
     """
-    
+    Reads all Parquet files from previous ETL steps into a Spark SQL DataFrame that is 
+        a fact table made from all of the dimmension tables made  
+        for the purpose of easy reporting and analytical queries
+    Input Args: SparkSession object, and 
+        the output folder for the Parquet output file
+    Output:
+        * NA - writes a Parquet file out
     """
     
     months_dfs = []
@@ -68,6 +74,32 @@ def make_fact_table(spark, output_path):
             ) as t
                 on i.year = t.year and i.month = t.month
         """)
+    
+    print("CHECKING ROWS AVAILABLE IN ALL TABLES")
+    spark.sql("""
+        select 'immigration' as table_name, count(*) as rowcnt
+        from immigration
+        
+        union all
+        select 'demographics' as table_name, count(*) as rowcnt
+        from demographics
+        
+        union all
+        select 'airports' as table_name, count(*) as rowcnt
+        from airports
+        
+        union all
+        select 'temperatures' as table_name, count(*) as rowcnt
+        from temperatures
+        
+        union all
+        select 'lcity' as table_name, count(*) as rowcnt
+        from lcity
+        
+        union all
+        select 'lstate' as table_name, count(*) as rowcnt
+        from lstate
+    """).show()
     
     print("CHECK THAT FACT TABLE HAS SUFFICIENT ROWS")
     print(out_df.count())
